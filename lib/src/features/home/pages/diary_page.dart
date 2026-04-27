@@ -10,6 +10,7 @@ class DiaryPage extends StatelessWidget {
   final User user;
   final DiaryRepository repository;
 
+  // page untuk menampilkan semua entri diary pengguna, menggunakan FutureBuilder untuk mengambil data dari repository dan menampilkan dalam ListView
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DiaryEntry>>(

@@ -17,8 +17,10 @@ class DiaryRepository {
     final database = _database;
     if (database != null) return database;
 
-    final documents = await getApplicationDocumentsDirectory();
+    final documents =
+        await getApplicationDocumentsDirectory(); // mendapatkan direktori aplikasi untuk menyimpan database
     final databasePath = p.join(documents.path, 'dailylingo.db');
+    // membuka atau membuat database SQLite, dan membuat tabel diary_logs jika belum ada
     final opened = await openDatabase(
       databasePath,
       version: 1,
@@ -40,17 +42,19 @@ class DiaryRepository {
     return opened;
   }
 
+  // method untuk mengambil semua entri diary pengguna tertentu dari database SQLite
   Future<List<DiaryEntry>> getEntries(String userId) async {
     final database = await _db;
     final rows = await database.query(
       'diary_logs',
       where: 'user_id = ?',
       whereArgs: [userId],
-      orderBy: 'date DESC',
+      orderBy: 'date DESC', // mengurutkan berdasarkan tanggal terbaru
     );
     return rows.map(DiaryEntry.fromMap).toList();
   }
 
+  // method untuk mengambil entri diary berdasarkan ID, mengembalikan null jika tidak ditemukan
   Future<DiaryEntry?> getEntryById(int id) async {
     final database = await _db;
     final rows = await database.query(
@@ -63,15 +67,17 @@ class DiaryRepository {
     return DiaryEntry.fromMap(rows.first);
   }
 
+  // method untuk menyimpan atau memperbarui entri diary, jika id null maka akan dibuat baru, jika id sudah ada maka akan diperbarui
   Future<int> saveEntry(DiaryEntry entry) async {
     final database = await _db;
     final values = entry.toMap()..remove('id');
-
+    // menyimpan data entri diary ke database SQLite
     final id = entry.id == null
         ? await database.insert(
             'diary_logs',
             values,
-            conflictAlgorithm: ConflictAlgorithm.replace,
+            conflictAlgorithm: ConflictAlgorithm
+                .replace, // jika terjadi konflik (misalnya id sudah ada), maka data akan digantikan
           )
         : await database
               .update(
@@ -82,7 +88,7 @@ class DiaryRepository {
                 conflictAlgorithm: ConflictAlgorithm.replace,
               )
               .then((_) => entry.id!);
-
+    // menyimpan data entri diary ke Firestore
     await _firestore
         .collection('users')
         .doc(entry.userId)
@@ -99,6 +105,7 @@ class DiaryRepository {
     return id;
   }
 
+  // method untuk menghapus entri diary, termasuk menghapus file audio lokal jika ada
   Future<void> deleteEntry(DiaryEntry entry) async {
     final database = await _db;
     if (entry.id != null) {

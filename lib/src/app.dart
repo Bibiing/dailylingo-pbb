@@ -7,6 +7,7 @@ import 'theme/app_theme.dart';
 class DailyLingoApp extends StatelessWidget {
   const DailyLingoApp({super.key});
 
+  // tampilan utama aplikasi, MaterialApp sebagai root widget dengan tema dan halaman awal yang ditentukan.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

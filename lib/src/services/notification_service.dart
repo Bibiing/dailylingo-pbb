@@ -9,11 +9,12 @@ class NotificationService {
   NotificationService(this._plugin);
 
   final FlutterLocalNotificationsPlugin _plugin;
-  static const _enabledKey = 'daily_notifications_enabled';
-  static const _hourKey = 'daily_notifications_hour';
-  static const _minuteKey = 'daily_notifications_minute';
-  static const _notificationId = 1001;
+  static const _enabledKey = 'daily_notifications_enabled'; // untuk menyimpan status apakah notifikasi diaktifkan atau tidak
+  static const _hourKey = 'daily_notifications_hour'; // untuk menyimpan jam pengingat harian
+  static const _minuteKey = 'daily_notifications_minute'; // untuk menyimpan menit pengingat harian
+  static const _notificationId = 1001; // ID unik untuk notifikasi harian
 
+  // fungsi untuk menginisialisasi layanan notifikasi, termasuk mengatur zona waktu dan meminta izin jika diperlukan
   Future<void> initialize() async {
     tz.initializeTimeZones();
     final timezoneName = await FlutterTimezone.getLocalTimezone();
@@ -25,6 +26,7 @@ class NotificationService {
     await requestPermission();
   }
 
+  // fungsi untuk meminta izin notifikasi dari pengguna
   Future<bool> requestPermission() async {
     final android = _plugin
         .resolvePlatformSpecificImplementation<
@@ -34,11 +36,13 @@ class NotificationService {
     return granted ?? true;
   }
 
+  // fungsi untuk memeriksa apakah notifikasi harian diaktifkan atau tidak
   Future<bool> get isEnabled async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_enabledKey) ?? false;
   }
 
+  // fungsi untuk mengaktifkan atau menonaktifkan notifikasi harian
   Future<void> setEnabled(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_enabledKey, enabled);
@@ -47,6 +51,7 @@ class NotificationService {
     }
   }
 
+  // fungsi untuk mendapatkan waktu pengingat harian yang disimpan, atau mengembalikan waktu default (20:00) jika belum disimpan
   Future<TimeOfDay> get reminderTime async {
     final prefs = await SharedPreferences.getInstance();
     final hour = prefs.getInt(_hourKey) ?? 20;
@@ -54,12 +59,14 @@ class NotificationService {
     return TimeOfDay(hour: hour, minute: minute);
   }
 
+  // fungsi untuk mengatur waktu pengingat harian
   Future<void> setReminderTime(TimeOfDay time) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_hourKey, time.hour);
     await prefs.setInt(_minuteKey, time.minute);
   }
 
+  // fungsi detail yang ditampilkan pada notifikasi harian
   Future<void> scheduleDailyReminder(TimeOfDay time) async {
     const details = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -96,11 +103,13 @@ class NotificationService {
     );
   }
 
+  // fungsi untuk membatalkan notifikasi harian yang sudah dijadwalkan
   Future<void> showReminder() async {
     final time = await reminderTime;
     await scheduleDailyReminder(time);
   }
 
+  // testing
   Future<void> showReminderNow() async {
     const details = NotificationDetails(
       android: AndroidNotificationDetails(

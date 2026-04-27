@@ -12,12 +12,15 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isLogin = true;
-  bool _isLoading = false;
-  String? _errorText;
+  final _formKey = GlobalKey<FormState>(); // key untuk form validasi
+  final _emailController =
+      TextEditingController(); // controller untuk input email
+  final _passwordController =
+      TextEditingController(); // controller untuk input password
+  bool _isLogin = true; // flag untuk menentukan mode login atau register
+  bool _isLoading = false; // flag untuk menampilkan loading indicator
+  String?
+  _errorText; // variabel untuk menyimpan pesan error yang akan ditampilkan ke pengguna
 
   @override
   void dispose() {
@@ -26,6 +29,7 @@ class _AuthScreenState extends State<AuthScreen> {
     super.dispose();
   }
 
+  // method untuk menangani submit form
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() {
@@ -35,11 +39,13 @@ class _AuthScreenState extends State<AuthScreen> {
 
     try {
       if (_isLogin) {
+        // panggil method signIn dari AuthService untuk login pengguna
         await widget.authService.signIn(
           _emailController.text.trim(),
           _passwordController.text.trim(),
         );
       } else {
+        // panggil method register dari AuthService untuk membuat akun baru
         await widget.authService.register(
           _emailController.text.trim(),
           _passwordController.text.trim(),
@@ -54,6 +60,7 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  // tampilan UI autentikasi
   @override
   Widget build(BuildContext context) {
     return Scaffold(

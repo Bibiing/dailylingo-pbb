@@ -17,6 +17,7 @@ class DiaryEntry {
   final String? localAudioPath;
   final int wpm;
 
+  // method toMap untuk mengubah instance DiaryEntry menjadi Map yang dapat disimpan ke database
   Map<String, Object?> toMap() {
     return {
       'id': id,
@@ -29,6 +30,7 @@ class DiaryEntry {
     };
   }
 
+  // factory constructor untuk membuat instance DiaryEntry dari Map yang diambil dari database
   factory DiaryEntry.fromMap(Map<String, Object?> map) {
     return DiaryEntry(
       id: map['id'] as int?,
@@ -41,6 +43,7 @@ class DiaryEntry {
     );
   }
 
+  // method copyWith untuk membuat salinan DiaryEntry dengan beberapa field yang diubah
   DiaryEntry copyWith({
     int? id,
     String? title,
