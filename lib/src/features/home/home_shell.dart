@@ -39,6 +39,7 @@ class _HomeShellState extends State<HomeShell> {
     await _notificationService.initialize();
     final enabled = await _notificationService.isEnabled;
     if (enabled) {
+      await _notificationService.requestPermission();
       final time = await _notificationService.reminderTime;
       await _notificationService.scheduleDailyReminder(time);
     }

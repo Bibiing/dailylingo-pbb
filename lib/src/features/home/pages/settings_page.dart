@@ -44,6 +44,20 @@ class _SettingsPageState extends State<SettingsPage> {
                 onChanged: (value) async {
                   await widget.notificationService.setEnabled(value);
                   if (value) {
+                    final granted = await widget.notificationService
+                        .requestPermission();
+                    if (!granted) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Notification permission was denied.',
+                            ),
+                          ),
+                        );
+                      }
+                      return;
+                    }
                     final reminderTime =
                         await widget.notificationService.reminderTime;
                     await widget.notificationService.scheduleDailyReminder(
