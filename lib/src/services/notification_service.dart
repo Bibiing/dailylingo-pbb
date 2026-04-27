@@ -79,7 +79,7 @@ class NotificationService {
       'What did you do today? Let\'s write and speak it out.',
       scheduled,
       details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
@@ -89,5 +89,23 @@ class NotificationService {
   Future<void> showReminder() async {
     final time = await reminderTime;
     await scheduleDailyReminder(time);
+  }
+
+  Future<void> showReminderNow() async {
+    const details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'dailylingo_reminder',
+        'Daily reminder',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    );
+
+    await _plugin.show(
+      _notificationId + 1,
+      'Time for your DailyLingo!',
+      'What did you do today? Let\'s write and speak it out.',
+      details,
+    );
   }
 }

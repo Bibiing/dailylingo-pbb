@@ -95,6 +95,21 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () async {
+              await widget.notificationService.showReminderNow();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Test reminder sent immediately.'),
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.notifications_active_outlined),
+            label: const Text('Test reminder now'),
+          ),
+          const SizedBox(height: 12),
           FilledButton.tonal(
             onPressed: () => widget.authService.signOut(),
             child: const Text('Logout'),

@@ -17,72 +17,11 @@ import 'package:flutter/foundation.dart'
 ///
 
 class DefaultFirebaseOptions {
-  static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return android;
-      case TargetPlatform.iOS:
-        return ios;
-      case TargetPlatform.macOS:
-        return macos;
-      case TargetPlatform.windows:
-        return windows;
-      case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
-      default:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions are not supported for this platform.',
-        );
-    }
-  }
-
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBdoADal0tbSkvS-bjqaaMePqb9d37fPyw',
-    appId: '1:982793571503:web:12ddf238ca495e06b8185a',
-    messagingSenderId: '982793571503',
-    projectId: 'dailylingo-pbb',
-    authDomain: 'dailylingo-pbb.firebaseapp.com',
-    storageBucket: 'dailylingo-pbb.firebasestorage.app',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAj4-U1opI7DXNI2N_clglrfcmJHxCsebU',
     appId: '1:982793571503:android:0d2383f97190d1a6b8185a',
     messagingSenderId: '982793571503',
     projectId: 'dailylingo-pbb',
-    storageBucket: 'dailylingo-pbb.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCvOY1aOgtdiTCRL0IZQjE-jcqcWv2htQA',
-    appId: '1:982793571503:ios:da23f6da15a6db37b8185a',
-    messagingSenderId: '982793571503',
-    projectId: 'dailylingo-pbb',
-    storageBucket: 'dailylingo-pbb.firebasestorage.app',
-    iosBundleId: 'com.example.dailylingo',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCvOY1aOgtdiTCRL0IZQjE-jcqcWv2htQA',
-    appId: '1:982793571503:ios:da23f6da15a6db37b8185a',
-    messagingSenderId: '982793571503',
-    projectId: 'dailylingo-pbb',
-    storageBucket: 'dailylingo-pbb.firebasestorage.app',
-    iosBundleId: 'com.example.dailylingo',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBdoADal0tbSkvS-bjqaaMePqb9d37fPyw',
-    appId: '1:982793571503:web:591c63985e1d8c56b8185a',
-    messagingSenderId: '982793571503',
-    projectId: 'dailylingo-pbb',
-    authDomain: 'dailylingo-pbb.firebaseapp.com',
     storageBucket: 'dailylingo-pbb.firebasestorage.app',
   );
 }
